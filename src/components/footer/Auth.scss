@@ -1,0 +1,51 @@
+.wrapper-auth {
+  .footer-auth {
+    padding: 60px 0;
+    background: #001c36;
+    color: #ffffff;
+    .footer-container {
+      .footer-col {
+        .logo {
+          font-size: 50px;
+          font-family: "Teko", sans-serif;
+          letter-spacing: 3px;
+        }
+        .typography {
+          color: #999999;
+          font-size: 14px;
+          margin-bottom: 1em;
+        }
+        .footer-top {
+          color: #1890ff;
+          font-size: 14px;
+          text-transform: uppercase;
+          font-weight: bold;
+          margin-bottom: 15px;
+        }
+        .footer-docs {
+          a {
+            font-size: 13px;
+            display: block;
+            color: #ffffff;
+            line-height: 1.8rem;
+            &:hover {
+              color: #1890ff;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1040px) {
+  .wrapper-auth {
+    .footer-auth {
+      .footer-container {
+        width: 1000px;
+        padding: 0 20px;
+        margin: 0 auto;
+      }
+    }
+  }
+}

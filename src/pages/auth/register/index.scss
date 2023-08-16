@@ -1,0 +1,35 @@
+.wrapper-auth {
+  .register-form {
+    padding: 40px 0;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .form-container {
+      form {
+        margin: 0px auto;
+        :where(.css-dev-only-do-not-override-mxhywb).ant-col-8 {
+          display: block;
+          flex: 0 0 20%;
+          max-width: 33.33333333333333%;
+        }
+        :where(.css-dev-only-do-not-override-mxhywb).ant-form-item
+          .ant-form-item-label {
+          text-align: start;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1040px) {
+  .wrapper-auth {
+    .register-form {
+      .form-container {
+        width: 1000px;
+        padding: 0 20px;
+        margin: 0 auto;
+      }
+    }
+  }
+}

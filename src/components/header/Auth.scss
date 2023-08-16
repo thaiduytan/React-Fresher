@@ -1,0 +1,38 @@
+.wrapper-auth {
+  .header-auth {
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    .header-logo {
+      span {
+        a {
+          font-size: 50px;
+          font-family: "Teko", sans-serif;
+          letter-spacing: -1px;
+          color: #444;
+          transform: translateY(2px);
+        }
+      }
+    }
+    .header-nav {
+      a {
+        font-family: "Rubik", sans-serif;
+        color: #444444;
+        margin-right: 7px;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+@media (min-width: 1040px) {
+  .wrapper-auth {
+    .header-auth {
+      width: 1000px;
+      padding: 0 20px;
+      margin: 0 auto;
+    }
+  }
+}
