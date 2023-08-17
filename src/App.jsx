@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.scss"
+import "./App.scss";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Home from "./components/home";
@@ -14,6 +14,9 @@ import ContactPage from "./pages/contact";
 import AuthPage from "./pages/auth";
 import RegisterPage from "./pages/auth/register";
 import LoginPage from "./pages/auth/login";
+import { callFetchAccount } from "./apiService/api";
+import { useDispatch } from "react-redux";
+import { doGetAccountAction } from "./redux/account/accountSlice";
 
 // chuyển component layput leen thành compoent Main,
 const Layout = () => {
@@ -28,6 +31,19 @@ const Layout = () => {
 
 // giao cho component App bọc RouterProvider, chứ không làm như thư viện RouterProvider bọc APP
 export default function App() {
+  const dispatch = useDispatch();
+
+  // func fetch lại account và chuyền ngược lại cho reddux
+  const getAccount = async () => {
+    const res = await callFetchAccount();
+    if (res && res.data) {
+      dispatch(doGetAccountAction(res.data));
+    }
+  };
+  React.useEffect(() => {
+    getAccount();
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: "/",

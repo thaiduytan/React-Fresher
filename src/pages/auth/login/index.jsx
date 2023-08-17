@@ -3,10 +3,13 @@ import { Button, Divider, Form, Input, message, notification } from "antd";
 import "./index.scss";
 import { callLogin } from "../../../apiService/api";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { doLoginAction } from "../../../redux/account/accountSlice";
 const buttonStyle = {
   margin: "20px", // Đặt giá trị margin cho cả bốn phía (trên, phải, dưới, trái)
 };
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
   const onFinish = async (values) => {
@@ -15,6 +18,8 @@ const LoginPage = () => {
     const res = await callLogin(username, password, 3000);
     setIsLoading(false);
     if (res?.data) {
+      localStorage.setItem("access_token", res.data.access_token);
+      dispatch(doLoginAction(res.data.user));
       message.success("Account login successful!");
       navigate("/");
     } else {

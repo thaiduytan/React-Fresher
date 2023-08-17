@@ -6,7 +6,16 @@ const baseURL = import.meta.env.VITE_BACKEND_URL;
 // instance ----------------------------------------------------
 const instance = axios.create({
   baseURL: baseURL,
+  // Make Axios send cookies in its requests automatically ( GG : )
+  withCredentials: true,
 });
+
+// sending the bearer token with axios ( GG )
+// KHI RESET TRANG, SẼ MẤT STATE CỦA REDUX, SỬ DỤNG CÁCH GỬI ACCESS_TOKEN LÊN LẠI thông qua localStorage
+// KHI reload TRANG (FILE APP.JSX - USEEFFECT) sẽ GỬI LẠI ACCESS ĐỂ LẤY LẠI THÔNG TIN CỦA USER.
+instance.defaults.headers.common = {
+  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+};
 
 // interceptor axios -------------------------------------------------
 // Add a request interceptor

@@ -11,4 +11,11 @@ const callRegister = (fullName, email, password, phone) => {
 const callLogin = (username, password, delay = 0) => {
   return axios.post("/api/v1/auth/login", { username, password, delay });
 };
-export { callRegister, callLogin };
+
+// xử dụng callFetchAcount để gửi  Authorization: `bearer` thông qua file axios-customize
+// mục đich nhận lại data để truyền lên lại cho redux
+const callFetchAccount = () => {
+  return axios.get("/api/v1/auth/account");
+};
+
+export { callRegister, callLogin, callFetchAccount };
