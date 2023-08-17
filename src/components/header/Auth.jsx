@@ -11,8 +11,8 @@ const HeaderAuth = () => {
         </span>
       </div>
       <div className="header-nav">
-        <Link to="/auth/login">Login</Link>
-        <Link to="/auth/register">Register</Link>
+        <Link to="/auth/login">Đăng nhập</Link>
+        <Link to="/auth/register">Đăng ký</Link>
       </div>
     </header>
   );
