@@ -34,6 +34,20 @@ const Layout = () => {
     </div>
   );
 };
+const LayoutAdmin = () => {
+  // logic check kiểm tra user/admin hay không ?
+  const isAdminRole = window.location.pathname.startsWith("/admin");
+  const user = useSelector((state) => state.account.user);
+  const userRole = user.role;
+
+  return (
+    <div className="layput-page">
+      {isAdminRole && userRole === "ADMIN" && <Header />}
+      <Outlet></Outlet>
+      {isAdminRole && userRole === "ADMIN" && <Footer />}
+    </div>
+  );
+};
 
 // giao cho component App bọc RouterProvider, chứ không làm như thư viện RouterProvider bọc APP
 export default function App() {
@@ -41,7 +55,13 @@ export default function App() {
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   // func fetch lại account và chuyền ngược lại cho reddux
   const getAccount = async () => {
-    if (window.location.pathname === "/auth/login") return;
+    // không gọi api khi log vào page login, register, home
+    if (
+      window.location.pathname === "/auth/login" ||
+      window.location.pathname === "/auth/register" ||
+      window.location.pathname === "/"
+    )
+      return;
     const res = await callFetchAccount();
     if (res && res.data) {
       dispatch(doGetAccountAction(res.data));
@@ -76,7 +96,7 @@ export default function App() {
     // admin
     {
       path: "/admin",
-      element: <Layout />,
+      element: <LayoutAdmin />,
       errorElement: <NotFound></NotFound>,
 
       // các children sử dụng chung 1 component header và footer thông qua outlet
@@ -122,7 +142,8 @@ export default function App() {
     <>
       {isAuthenticated === true ||
       window.location.pathname === "/auth/login" ||
-      window.location.pathname === "/admin" ? (
+      window.location.pathname === "/auth/register" ||
+      window.location.pathname === "/" ? (
         <RouterProvider router={router} />
       ) : (
         <Loading></Loading>
