@@ -52,14 +52,13 @@ const LayoutAdmin = () => {
 // giao cho component App bọc RouterProvider, chứ không làm như thư viện RouterProvider bọc APP
 export default function App() {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+  const isLoading = useSelector((state) => state.account.isLoading);
   // func fetch lại account và chuyền ngược lại cho reddux
   const getAccount = async () => {
     // không gọi api khi log vào page login, register, home
     if (
       window.location.pathname === "/auth/login" ||
-      window.location.pathname === "/auth/register" ||
-      window.location.pathname === "/"
+      window.location.pathname === "/auth/register"
     )
       return;
     const res = await callFetchAccount();
@@ -70,7 +69,7 @@ export default function App() {
   React.useEffect(() => {
     setTimeout(() => {
       getAccount();
-    }, 200);
+    }, 1000);
   }, []);
 
   const router = createBrowserRouter([
@@ -140,7 +139,7 @@ export default function App() {
   ]);
   return (
     <>
-      {isAuthenticated === true ||
+      {isLoading === false ||
       window.location.pathname === "/auth/login" ||
       window.location.pathname === "/auth/register" ||
       window.location.pathname === "/" ? (

@@ -18,4 +18,8 @@ const callFetchAccount = () => {
   return axios.get("/api/v1/auth/account");
 };
 
-export { callRegister, callLogin, callFetchAccount };
+const callLogOut = () => {
+  return axios.post("/api/v1/auth/logout");
+};
+
+export { callRegister, callLogin, callFetchAccount, callLogOut };
