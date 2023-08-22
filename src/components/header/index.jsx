@@ -9,7 +9,7 @@ import { Dropdown, Space } from "antd";
 import { useNavigate } from "react-router";
 import "./Header.scss";
 import { callLogOut } from "../../apiService/api";
-import { doLogOutAccount } from "../../redux/account/accountSlice";
+import { doLogOutAccount_cachMot } from "../../redux/account/accountSlice";
 
 const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -22,7 +22,7 @@ const Header = () => {
     const res = await callLogOut();
     if (res && res.data) {
       // dọn sạch reddux state
-      dispatch(doLogOutAccount());
+      dispatch(doLogOutAccount_cachMot());
       message.success("Đăng xuất thành công");
       navigate("/");
     }

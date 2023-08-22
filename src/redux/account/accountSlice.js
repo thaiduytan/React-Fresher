@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { callLogOut } from "../../apiService/api";
 
 const initialState = {
   isAuthenticated: false,
@@ -12,6 +13,16 @@ const initialState = {
     id: "",
   },
 };
+
+export const doLogOutAccount_cachHai = createAsyncThunk(
+  "account/fetchUserById",
+  async () => {
+    const res = await callLogOut();
+    if (res && res.data) {
+      return res.data;
+    }
+  }
+);
 
 export const accountSlice = createSlice({
   name: "account",
@@ -27,7 +38,7 @@ export const accountSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload.user;
     },
-    doLogOutAccount: (state) => {
+    doLogOutAccount_cachMot: (state) => {
       localStorage.removeItem("access_token");
       state.isAuthenticated = false;
       state.user = {
@@ -40,10 +51,25 @@ export const accountSlice = createSlice({
       };
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    // Add reducers for additional action types here, and handle loading state as needed
+    builder.addCase(doLogOutAccount_cachHai.fulfilled, (state, action) => {
+      // Add user to the state array
+      localStorage.removeItem("access_token");
+      state.isAuthenticated = false;
+      state.user = {
+        email: "",
+        phone: "",
+        fullName: "",
+        role: "",
+        avatar: "",
+        id: "",
+      };
+    });
+  },
 });
 
-export const { doLoginAction, doGetAccountAction, doLogOutAccount } =
+export const { doLoginAction, doGetAccountAction, doLogOutAccount_cachMot } =
   accountSlice.actions;
 
 export default accountSlice.reducer;

@@ -2,7 +2,7 @@ import "./footer.scss";
 
 const Footer = () => {
   return (
-    <footer>
+    <footer className="page-footer">
       <div>Đại học Bạc liêu React&copy; by DuyTanzz</div>
     </footer>
   );

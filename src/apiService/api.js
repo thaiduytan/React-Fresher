@@ -22,4 +22,14 @@ const callLogOut = () => {
   return axios.post("/api/v1/auth/logout");
 };
 
-export { callRegister, callLogin, callFetchAccount, callLogOut };
+const callFetchListUserWithPaginate = (current = 1, pageSize = 3) => {
+  return axios.get(`/api/v1/user?current=${current}&pageSize=${pageSize}`);
+};
+
+export {
+  callRegister,
+  callLogin,
+  callFetchAccount,
+  callLogOut,
+  callFetchListUserWithPaginate,
+};

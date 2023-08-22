@@ -23,6 +23,7 @@ import ProtectedRoute from "./components/protectedRoute";
 import Loading from "./components/loading";
 import NotFound from "./components/notFound";
 import AdminPage from "./pages/admin";
+import LayoutAdmin from "./components/admin/LayoutAdmin";
 
 // chuyển component layput leen thành compoent Main,
 const Layout = () => {
@@ -34,20 +35,20 @@ const Layout = () => {
     </div>
   );
 };
-const LayoutAdmin = () => {
-  // logic check kiểm tra user/admin hay không ?
-  const isAdminRole = window.location.pathname.startsWith("/admin");
-  const user = useSelector((state) => state.account.user);
-  const userRole = user.role;
+// const LayoutAdmin = () => {
+//   // logic check kiểm tra user/admin hay không ?
+//   const isAdminRole = window.location.pathname.startsWith("/admin");
+//   const user = useSelector((state) => state.account.user);
+//   const userRole = user.role;
 
-  return (
-    <div className="layput-page">
-      {isAdminRole && userRole === "ADMIN" && <Header />}
-      <Outlet></Outlet>
-      {isAdminRole && userRole === "ADMIN" && <Footer />}
-    </div>
-  );
-};
+//   return (
+//     <div className="layput-page">
+//       {isAdminRole && userRole === "ADMIN" && <Header />}
+//       <Outlet></Outlet>
+//       {isAdminRole && userRole === "ADMIN" && <Footer />}
+//     </div>
+//   );
+// };
 
 // giao cho component App bọc RouterProvider, chứ không làm như thư viện RouterProvider bọc APP
 export default function App() {

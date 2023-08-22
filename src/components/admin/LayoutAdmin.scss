@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+.layout-admin {
+  //   logo sibar
+  .layout-admin__logo {
+    font-family: "Poppins", sans-serif;
+    padding: 20px 25px;
+    padding-bottom: 30px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .layout-admin__link {
+    color: inherit;
+  }
+  .layout-admin__header {
+    height: 50px;
+    border-bottom: 1px solid #ebebeb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    a {
+      color: inherit;
+    }
+  }
+}
