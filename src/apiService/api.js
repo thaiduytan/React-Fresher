@@ -22,8 +22,8 @@ const callLogOut = () => {
   return axios.post("/api/v1/auth/logout");
 };
 
-const callFetchListUserWithPaginate = (current = 1, pageSize = 3) => {
-  return axios.get(`/api/v1/user?current=${current}&pageSize=${pageSize}`);
+const callFetchListUserWithPaginate = (query) => {
+  return axios.get(`/api/v1/user?${query}`);
 };
 
 export {

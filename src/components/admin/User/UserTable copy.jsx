@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Row, Col, Button } from "antd";
+import { Table, Row, Col } from "antd";
 import InputSearch from "./InputSearch";
 import { callFetchListUserWithPaginate } from "../../../apiService/api";
 
@@ -11,45 +11,45 @@ const UserTable = () => {
   const [current, setCurrent] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(5);
   const [dataSearch, setDataSearch] = React.useState({});
-  const [dataSort, setDataSort] = React.useState("");
 
-  const fetchUser = async () => {
+  // console.log("UserTable >>> dataSearch:", dataSearch);
+
+  const fetchUser = async (dataSearch) => {
     setIsLoading(true);
     let query = `current=${current}&pageSize=${pageSize}`;
 
-    // search input - check object đã set rồi (khác rỗng) thì chạy vào hàm if
-    if (Object.getOwnPropertyNames(dataSearch).length !== 0) {
-      query += dataSearch;
+    // search input
+    if (dataSearch) {
+      console.log("fetchUser >>> dataSearch:", dataSearch);
+      if (dataSearch.fullName) {
+        query += `&fullName=/${dataSearch.fullName}/i`;
+      }
+      if (dataSearch.email) {
+        query += `&email=/${dataSearch.email}/i`;
+      }
+      if (dataSearch.phone) {
+        query += `&phone=/${dataSearch.phone}/i`;
+      }
     }
-    // sort click
-    if (dataSort) {
-      query += dataSort;
-    }
-
+    
     const res = await callFetchListUserWithPaginate(query);
+    // console.log(res);
     if (res && res.statusCode === 200) {
       setListUser(res?.data?.result);
       setTotal(res?.data?.meta?.total);
     }
+    // console.log("params", pagination, filters, sorter, extra);
+
     setIsLoading(false);
   };
   React.useEffect(() => {
-    fetchUser();
-  }, [current, pageSize, dataSearch, dataSort]);
+    fetchUser(dataSearch);
+  }, [current, pageSize, dataSearch]);
 
   const columns = [
     {
       title: "ID",
       dataIndex: "_id",
-      render: (text, record, index) => {
-        return (
-          <>
-            <a onClick={() => console.log(record)} href="#">
-              {record._id}
-            </a>
-          </>
-        );
-      },
     },
     {
       title: "Tên hiển thị",
@@ -88,12 +88,10 @@ const UserTable = () => {
   //   },
   // ];
 
-  const handleSearch = (dataQuerySearch) => {
-    setDataSearch(dataQuerySearch);
-  };
-
   // hàm có sẳn thư viện
   const onChange = (pagination, filters, sorter, extra) => {
+    // console.log("params", pagination, filters, sorter, extra);
+    // console.log(sorter);
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
       setPageSize(pagination.pageSize);
@@ -102,36 +100,16 @@ const UserTable = () => {
       setPageSize(pagination.pageSize);
       setCurrent(1);
     }
-
-    // query sort
-    if (sorter && sorter.field) {
-      setDataSort(
-        `&sort=${
-          sorter.order === "ascend" ? `${sorter.field}` : `-${sorter.field}`
-        }`
-      );
-    }
   };
 
   return (
     <>
       <Row style={{ padding: "0px 15px" }} gutter={[20, 20]}>
         <Col span={24}>
-          <InputSearch handleSearch={handleSearch} />
+          <InputSearch setDataSearch={setDataSearch} />
         </Col>
         <Col span={24}>
           <Table
-            // onRow={(record, recordIndex) => ({
-            //   onClick: (event) => {
-            //     console.log(
-            //       "onRow onClick",
-            //       event.target,
-            //       event.target.className,
-            //       record,
-            //       recordIndex
-            //     );
-            //   },
-            // })}
             className="def"
             columns={columns}
             dataSource={listUser}

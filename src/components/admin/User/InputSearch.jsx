@@ -8,11 +8,26 @@ const validateMessages = {
   },
 };
 
-const AdvancedSearchForm = () => {
+const AdvancedSearchForm = ({ handleSearch }) => {
   const [form] = Form.useForm();
-
+  // const [dataQuerySearch, setDataQuerySearch] = React.useState("");
   const onFinish = (values) => {
-    console.log("Success:", values);
+    // setDataSearch(values);
+    let queryString = "";
+    if (values) {
+      // console.log("fetchUser >>> values:", values);
+      if (values.fullName) {
+        queryString += `&fullName=/${values.fullName}/i`;
+      }
+      if (values.email) {
+        queryString += `&email=/${values.email}/i`;
+      }
+      if (values.phone) {
+        queryString += `&phone=/${values.phone}/i`;
+      }
+      // setDataQuerySearch(querySearch);
+    }
+    handleSearch(queryString);
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -32,11 +47,11 @@ const AdvancedSearchForm = () => {
       >
         <Row gutter={24}>
           <Col span={8}>
-            {/* name */}
+            {/* fullname */}
             <Form.Item
               labelCol={{ span: 24 }} //whole column
-              label="Username"
-              name="username"
+              label="Name"
+              name="fullName"
               rules={[
                 {
                   //   message: "username!",
@@ -69,7 +84,7 @@ const AdvancedSearchForm = () => {
               name="phone"
               rules={[
                 {
-                  required: true,
+                  // required: true,
                   message: "Please input your username!",
                 },
               ]}
@@ -101,10 +116,10 @@ const AdvancedSearchForm = () => {
   );
 };
 
-const InputSearch = () => {
+const InputSearch = ({ handleSearch }) => {
   return (
     <>
-      <AdvancedSearchForm></AdvancedSearchForm>
+      <AdvancedSearchForm handleSearch={handleSearch}></AdvancedSearchForm>
     </>
   );
 };
