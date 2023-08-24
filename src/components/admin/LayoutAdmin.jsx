@@ -10,7 +10,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Dropdown, Layout, Menu, Space, message, theme } from "antd";
+import { Avatar, Dropdown, Layout, Menu, Space, message, theme } from "antd";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { doLogOutAccount_cachHai } from "../../redux/account/accountSlice";
@@ -64,6 +64,10 @@ const itemsNav = [
 const LayoutAdmin = () => {
   const user = useSelector((state) => state.account.user);
 
+  const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
+    user?.avatar
+  }`;
+
   const [collapsed, setCollapsed] = useState(false);
 
   const dispatch = useDispatch();
@@ -90,6 +94,14 @@ const LayoutAdmin = () => {
   } = theme.useToken();
 
   const itemsDrop = [
+    {
+      label: (
+        <label style={{ cursor: "pointer" }}>
+          <Link style={{color: "inherit"}} to={"/"}>Trang chủ</Link>
+        </label>
+      ),
+      key: "admin",
+    },
     {
       label: (
         <label style={{ cursor: "pointer" }}>
@@ -143,6 +155,7 @@ const LayoutAdmin = () => {
             <Dropdown menu={{ items: itemsDrop }} trigger={["click"]}>
               <a onClick={(e) => e.preventDefault()}>
                 <Space>
+                  <Avatar src={urlAvatar} />
                   <span> Welcome {user?.fullName}</span>
                   <DownOutlined />
                 </Space>

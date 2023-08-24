@@ -26,10 +26,19 @@ const callFetchListUserWithPaginate = (query) => {
   return axios.get(`/api/v1/user?${query}`);
 };
 
+const callCreateAUser = (fullName, password, email, phone) => {
+  return axios.post(`/api/v1/user`, {
+    fullName,
+    password,
+    email,
+    phone,
+  });
+};
 export {
   callRegister,
   callLogin,
   callFetchAccount,
   callLogOut,
   callFetchListUserWithPaginate,
+  callCreateAUser,
 };

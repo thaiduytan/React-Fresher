@@ -2,16 +2,37 @@ import React from "react";
 import { Table, Row, Col, Button } from "antd";
 import InputSearch from "./InputSearch";
 import { callFetchListUserWithPaginate } from "../../../apiService/api";
+import ViewDetailUser from "./ViewDetailUser";
+import {
+  CloudUploadOutlined,
+  ExportOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
+import ModalCreateUser from "./ModalCreateUser";
+import moment from "moment";
 
 // https://stackblitz.com/run?file=demo.tsx
 const UserTable = () => {
   const [listUser, setListUser] = React.useState([]);
+
   const [isLoading, setIsLoading] = React.useState(false);
+
   const [total, setTotal] = React.useState(1);
+
   const [current, setCurrent] = React.useState(1);
+
   const [pageSize, setPageSize] = React.useState(5);
+
   const [dataSearch, setDataSearch] = React.useState({});
+
   const [dataSort, setDataSort] = React.useState("");
+
+  const [openDetailUser, setOpenDetailUser] = React.useState(false);
+
+  const [dataDetailUser, setDataDetailUser] = React.useState({});
+
+  const [openModalCreateUser, setOpenModalCreateUser] = React.useState(false);
 
   const fetchUser = async () => {
     setIsLoading(true);
@@ -33,6 +54,7 @@ const UserTable = () => {
     }
     setIsLoading(false);
   };
+
   React.useEffect(() => {
     fetchUser();
   }, [current, pageSize, dataSearch, dataSort]);
@@ -44,7 +66,7 @@ const UserTable = () => {
       render: (text, record, index) => {
         return (
           <>
-            <a onClick={() => console.log(record)} href="#">
+            <a onClick={() => handleOpenDetailUser(record)} href="#">
               {record._id}
             </a>
           </>
@@ -67,6 +89,20 @@ const UserTable = () => {
       sorter: true,
     },
     {
+      title: "Ngày cập nhật",
+      dataIndex: "updatedAt",
+      sorter: true,
+      render: (text, record, index) => {
+        return (
+          <>
+            <span>
+              {moment(record.updatedAt).format("DD-MM-YYYY HH:mm:ss")}
+            </span>
+          </>
+        );
+      },
+    },
+    {
       title: "Action",
       render: (text, record, index) => {
         return (
@@ -87,6 +123,11 @@ const UserTable = () => {
   //     phone: 123123123,
   //   },
   // ];
+
+  const handleOpenDetailUser = (data) => {
+    setOpenDetailUser(true);
+    setDataDetailUser(data);
+  };
 
   const handleSearch = (dataQuerySearch) => {
     setDataSearch(dataQuerySearch);
@@ -113,6 +154,43 @@ const UserTable = () => {
     }
   };
 
+  // text node Jsx, yêu cầu từ mã nguồn thư viện
+  const RenderHeader = () => {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "15px 10px",
+        }}
+      >
+        <span>Bảng danh sách người dùng</span>
+        <span style={{ display: "flex", gap: 15 }}>
+          <Button type="primary" icon={<ExportOutlined />}>
+            Export
+          </Button>
+          <Button type="primary" icon={<CloudUploadOutlined />}>
+            Import
+          </Button>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setOpenModalCreateUser(true)}
+          >
+            Thêm mới
+          </Button>
+          <Button
+            type="ghost"
+            icon={<ReloadOutlined />}
+            onClick={() => {
+              setDataSearch("");
+              setDataSort("");
+            }}
+          ></Button>
+        </span>
+      </div>
+    );
+  };
   return (
     <>
       <Row style={{ padding: "0px 15px" }} gutter={[20, 20]}>
@@ -133,6 +211,7 @@ const UserTable = () => {
             //   },
             // })}
             className="def"
+            caption={<RenderHeader />}
             columns={columns}
             dataSource={listUser}
             onChange={onChange}
@@ -145,10 +224,27 @@ const UserTable = () => {
               total: total,
               showSizeChanger: true,
               pageSizeOptions: ["5", "10", "20", "30"],
+              showTotal: (total, range) => {
+                return (
+                  <div>
+                    {range[0]} - {range[1]} / {total} dòng
+                  </div>
+                );
+              },
             }}
           />
         </Col>
       </Row>
+      <ViewDetailUser
+        show={openDetailUser}
+        setShow={setOpenDetailUser}
+        data={dataDetailUser}
+      />
+      <ModalCreateUser
+        show={openModalCreateUser}
+        setShow={setOpenModalCreateUser}
+        fetchUser={fetchUser}
+      />
     </>
   );
 };
