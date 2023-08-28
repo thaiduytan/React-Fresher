@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import ModalCreateUser from "./ModalCreateUser";
 import moment from "moment";
+import ModalImportDataUser from "./ModalImportDataUser";
 
 // https://stackblitz.com/run?file=demo.tsx
 const UserTable = () => {
@@ -33,6 +34,8 @@ const UserTable = () => {
   const [dataDetailUser, setDataDetailUser] = React.useState({});
 
   const [openModalCreateUser, setOpenModalCreateUser] = React.useState(false);
+
+  const [openModalImportUser, setOpenModalImportUser] = React.useState(false);
 
   const fetchUser = async () => {
     setIsLoading(true);
@@ -169,7 +172,11 @@ const UserTable = () => {
           <Button type="primary" icon={<ExportOutlined />}>
             Export
           </Button>
-          <Button type="primary" icon={<CloudUploadOutlined />}>
+          <Button
+            type="primary"
+            icon={<CloudUploadOutlined />}
+            onClick={() => setOpenModalImportUser(true)}
+          >
             Import
           </Button>
           <Button
@@ -243,6 +250,11 @@ const UserTable = () => {
       <ModalCreateUser
         show={openModalCreateUser}
         setShow={setOpenModalCreateUser}
+        fetchUser={fetchUser}
+      />
+      <ModalImportDataUser
+        show={openModalImportUser}
+        setShow={setOpenModalImportUser}
         fetchUser={fetchUser}
       />
     </>

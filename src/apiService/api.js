@@ -34,6 +34,11 @@ const callCreateAUser = (fullName, password, email, phone) => {
     phone,
   });
 };
+
+// chuyền raw data
+const callBulkCreateUser = (data) => {
+  return axios.post("/api/v1/user/bulk-create", data);
+};
 export {
   callRegister,
   callLogin,
@@ -41,4 +46,5 @@ export {
   callLogOut,
   callFetchListUserWithPaginate,
   callCreateAUser,
+  callBulkCreateUser,
 };
