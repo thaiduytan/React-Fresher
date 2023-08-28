@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 import ModalCreateUser from "./ModalCreateUser";
 import moment from "moment";
-import ModalImportDataUser from "./ModalImportDataUser";
+import ModalImportDataUser from "./data/ModalImportDataUser";
 
 // https://stackblitz.com/run?file=demo.tsx
 const UserTable = () => {

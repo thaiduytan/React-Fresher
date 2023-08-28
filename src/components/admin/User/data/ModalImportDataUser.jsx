@@ -2,7 +2,8 @@ import React from "react";
 import { InboxOutlined } from "@ant-design/icons";
 import { Modal, Upload, Table, Button, notification, message } from "antd";
 import * as XLSX from "xlsx";
-import { callBulkCreateUser } from "../../../apiService/api";
+import { callBulkCreateUser } from "../../../../apiService/api";
+import templateFile from "./template.xlsx?url";
 const ModalImportDataUser = ({ show, setShow, fetchUser }) => {
   const [dataExcel, setDataExcel] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -131,8 +132,15 @@ const ModalImportDataUser = ({ show, setShow, fetchUser }) => {
             Click or drag file to this area to upload
           </p>
           <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibited from
-            uploading company data or other banned files.
+            Support for a single upload. Only accept .csv, .xls, .xlsx, or
+            &nbsp;
+            <a
+              onClick={(e) => e.stopPropagation()}
+              href={templateFile}
+              download
+            >
+              Dowload Sample File
+            </a>
           </p>
         </Dragger>
         <div className="" style={{ paddingTop: 20 }}>
