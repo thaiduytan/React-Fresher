@@ -3,6 +3,8 @@ import { InboxOutlined } from "@ant-design/icons";
 import { Modal, Upload, Table, Button, notification, message } from "antd";
 import * as XLSX from "xlsx";
 import { callBulkCreateUser } from "../../../../apiService/api";
+
+// https://vitejs.dev/guide/assets.html#explicit-url-imports
 import templateFile from "./template.xlsx?url";
 const ModalImportDataUser = ({ show, setShow, fetchUser }) => {
   const [dataExcel, setDataExcel] = React.useState([]);
@@ -70,6 +72,8 @@ const ModalImportDataUser = ({ show, setShow, fetchUser }) => {
       }
       if (status === "done") {
         message.success(`${info.file.name} file uploaded thành công.`);
+
+        // https://stackoverflow.com/questions/66171804/importing-xlsx-and-parsing-to-json
         if (info.fileList && info.fileList.length > 0) {
           const file = info.fileList[0].originFileObj;
           let reader = new FileReader();

@@ -1,10 +1,23 @@
 import React from "react";
-import { Table, Row, Col, Button } from "antd";
+import {
+  Table,
+  Row,
+  Col,
+  Button,
+  Popconfirm,
+  message,
+  notification,
+} from "antd";
 import InputSearch from "./InputSearch";
-import { callFetchListUserWithPaginate } from "../../../apiService/api";
+import {
+  callDeleteUser,
+  callFetchListUserWithPaginate,
+} from "../../../apiService/api";
 import ViewDetailUser from "./ViewDetailUser";
 import {
   CloudUploadOutlined,
+  DeleteTwoTone,
+  EditTwoTone,
   ExportOutlined,
   PlusOutlined,
   ReloadOutlined,
@@ -12,6 +25,8 @@ import {
 import ModalCreateUser from "./ModalCreateUser";
 import moment from "moment";
 import ModalImportDataUser from "./data/ModalImportDataUser";
+import * as XLSX from "xlsx";
+import ModalUpdateUserLvEasy from "./ModalUpdateUserLvEasy";
 
 // https://stackblitz.com/run?file=demo.tsx
 const UserTable = () => {
@@ -30,12 +45,13 @@ const UserTable = () => {
   const [dataSort, setDataSort] = React.useState("");
 
   const [openDetailUser, setOpenDetailUser] = React.useState(false);
-
   const [dataDetailUser, setDataDetailUser] = React.useState({});
 
   const [openModalCreateUser, setOpenModalCreateUser] = React.useState(false);
-
   const [openModalImportUser, setOpenModalImportUser] = React.useState(false);
+
+  const [openModalUpdateUser, setOpenModalUpdateUser] = React.useState(false);
+  const [dataUpdateUser, setDataUpdateUser] = React.useState({});
 
   const fetchUser = async () => {
     setIsLoading(true);
@@ -110,22 +126,33 @@ const UserTable = () => {
       render: (text, record, index) => {
         return (
           <>
-            <button>Delete</button>
+            <Popconfirm
+              placement="leftTop"
+              title={"Xác nhận xóa User"}
+              description={"Bạn có chắc chắn muốn xóa User này"}
+              onConfirm={() => hanldeDeleteUser(record._id)}
+              okText="Xác nhận"
+              cancelText="Hủy"
+            >
+              <span style={{ cursor: "pointer", margin: "0px 20px" }}>
+                <DeleteTwoTone twoToneColor="#ff4d4f"></DeleteTwoTone>
+              </span>
+            </Popconfirm>
+            <EditTwoTone
+              twoToneColor="#f57800"
+              style={{ cursor: "pointer" }}
+              onClick={() => hanldeOpenModalUpdateUser(record)}
+            ></EditTwoTone>
           </>
         );
       },
     },
   ];
 
-  // const data = [
-  //   {
-  //     key: "1",
-  //     _id: "207480201057",
-  //     fullName: "Duytan",
-  //     email: "thaiduytan77@gmail.com",
-  //     phone: 123123123,
-  //   },
-  // ];
+  const hanldeOpenModalUpdateUser = (data) => {
+    setOpenModalUpdateUser(true);
+    setDataUpdateUser(data);
+  };
 
   const handleOpenDetailUser = (data) => {
     setOpenDetailUser(true);
@@ -136,6 +163,30 @@ const UserTable = () => {
     setDataSearch(dataQuerySearch);
   };
 
+  // https://stackoverflow.com/questions/70871254/how-can-i-export-a-json-object-to-excel-using-nextjs-react
+  const hanldeExportFileUser = (data) => {
+    if (data && data.length > 0) {
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+      //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+      XLSX.writeFile(workbook, "OpenpingExportUser.xlsx");
+    }
+  };
+
+  const hanldeDeleteUser = async (userId) => {
+    const res = await callDeleteUser(userId);
+    if (res && res.data) {
+      message.success("Xóa user thành công");
+      fetchUser();
+    } else {
+      notification.error({
+        message: "Có lỗi xảy ra",
+        description: res.message,
+      });
+    }
+  };
   // hàm có sẳn thư viện
   const onChange = (pagination, filters, sorter, extra) => {
     if (pagination && pagination.current !== current) {
@@ -169,7 +220,11 @@ const UserTable = () => {
       >
         <span>Bảng danh sách người dùng</span>
         <span style={{ display: "flex", gap: 15 }}>
-          <Button type="primary" icon={<ExportOutlined />}>
+          <Button
+            type="primary"
+            icon={<ExportOutlined />}
+            onClick={() => hanldeExportFileUser(listUser)}
+          >
             Export
           </Button>
           <Button
@@ -256,6 +311,12 @@ const UserTable = () => {
         show={openModalImportUser}
         setShow={setOpenModalImportUser}
         fetchUser={fetchUser}
+      />
+      <ModalUpdateUserLvEasy
+        show={openModalUpdateUser}
+        setShow={setOpenModalUpdateUser}
+        fetchUser={fetchUser}
+        data={dataUpdateUser}
       />
     </>
   );

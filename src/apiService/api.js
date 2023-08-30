@@ -39,6 +39,14 @@ const callCreateAUser = (fullName, password, email, phone) => {
 const callBulkCreateUser = (data) => {
   return axios.post("/api/v1/user/bulk-create", data);
 };
+
+const callUpdateUser = (_id, fullName, phone) => {
+  return axios.put("/api/v1/user", { _id, fullName, phone });
+};
+
+const callDeleteUser = (_id) => {
+  return axios.delete(`/api/v1/user/${_id}`);
+};
 export {
   callRegister,
   callLogin,
@@ -47,4 +55,6 @@ export {
   callFetchListUserWithPaginate,
   callCreateAUser,
   callBulkCreateUser,
+  callUpdateUser,
+  callDeleteUser,
 };
