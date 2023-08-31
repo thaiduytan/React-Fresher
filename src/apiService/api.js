@@ -59,6 +59,44 @@ const callFetchListBookWithPaginate = (query) => {
 const callFetchCategory = () => {
   return axios.get("/api/v1/database/category");
 };
+
+// form-data
+const callUploadImageBook = (fileImg) => {
+  const formData = new FormData();
+  formData.append("fileImg", fileImg);
+  return axios({
+    method: "post",
+    url: "/api/v1/file/upload",
+    data: formData,
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "upload-type": "book",
+    },
+  });
+};
+
+// raw data : cach 2
+const callCreateABook = (
+  thumbnail,
+  slider,
+  mainText,
+  author,
+  price,
+  sold,
+  quantity,
+  category
+) => {
+  return axios.post("/api/v1/book", {
+    thumbnail,
+    slider,
+    mainText,
+    author,
+    price,
+    sold,
+    quantity,
+    category,
+  });
+};
 export {
   callRegister,
   callLogin,
@@ -71,4 +109,6 @@ export {
   callDeleteUser,
   callFetchListBookWithPaginate,
   callFetchCategory,
+  callUploadImageBook,
+  callCreateABook,
 };

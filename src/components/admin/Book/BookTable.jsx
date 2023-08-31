@@ -38,7 +38,7 @@ const BookTable = () => {
 
   const fetchBook = async () => {
     setLoading(true);
-    let query = `current=${current}&pageSize=${pageSize}`;
+    let query = `current=${current}&pageSize=${pageSize}&sort=-updatedAt`;
     // console.log(query);
 
     // search input - check object đã set rồi (khác rỗng) thì chạy vào hàm if
@@ -254,6 +254,7 @@ const BookTable = () => {
       <BookModalCreate
         show={openCreateBook}
         setShow={setOpenCreateBook}
+        fetchBook={fetchBook}
       ></BookModalCreate>
     </>
   );
