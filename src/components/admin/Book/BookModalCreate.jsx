@@ -52,12 +52,11 @@ const BookModalCreate = ({ show, setShow, fetchBook }) => {
 
   // Phần sửa lại func thư viện =================================================================================
   const onFinish = async (values) => {
-    console.log(values);
+    // console.log(values);
 
-    console.log("BookModalCreate >>> dataThumbNail:", dataThumbNail);
+    // console.log("BookModalCreate >>> dataThumbNail:", dataThumbNail);
 
-    console.log("BookModalCreate >>> dataSlider:", dataSlider);
-
+    // console.log("BookModalCreate >>> dataSlider:", dataSlider);
     // validate
     if (dataThumbNail && dataThumbNail.length === 0) {
       notification.error({

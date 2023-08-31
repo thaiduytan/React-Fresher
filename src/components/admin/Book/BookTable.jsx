@@ -17,7 +17,11 @@ import {
   PlusOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
-import { callFetchListBookWithPaginate } from "../../../apiService/api";
+import {
+  callDeleteBook,
+  callFetchListBookWithPaginate,
+} from "../../../apiService/api";
+import * as XLSX from "xlsx";
 import moment from "moment";
 import BookViewDetail from "./BookViewDetail";
 import BookModalCreate from "./BookModalCreate";
@@ -68,6 +72,32 @@ const BookTable = () => {
     setOpenViewDetailBook(true);
     setDataDetailBooj(data);
   };
+
+  const hanldeDeleteBook = async (_idBook) => {
+    const res = await callDeleteBook(_idBook);
+    if (res && res.data) {
+      message.success("Xóa Book thành công");
+      fetchBook();
+    } else {
+      notification.error({
+        message: "Có lỗi xảy ra",
+        description: res.message,
+      });
+    }
+  };
+
+  // https://stackoverflow.com/questions/70871254/how-can-i-export-a-json-object-to-excel-using-nextjs-react
+  const hanldeExportFileBook = (data) => {
+    if (data && data.length > 0) {
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+      //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+      XLSX.writeFile(workbook, "OpenpingExportBook.xlsx");
+    }
+  };
+
   const onChange = (pagination, filters, sorter, extra) => {
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
@@ -156,9 +186,9 @@ const BookTable = () => {
           <>
             <Popconfirm
               placement="leftTop"
-              title={"Xác nhận xóa User"}
-              description={"Bạn có chắc chắn muốn xóa User này"}
-              //   onConfirm={() => hanldeDeleteUser(record._id)}
+              title={"Xác nhận xóa Book"}
+              description={"Bạn có chắc chắn muốn xóa Book này"}
+              onConfirm={() => hanldeDeleteBook(record._id)}
               okText="Xác nhận"
               cancelText="Hủy"
             >
@@ -190,7 +220,7 @@ const BookTable = () => {
           <Button
             type="primary"
             icon={<ExportOutlined />}
-            // onClick={() => hanldeExportFileUser(listUser)}
+            onClick={() => hanldeExportFileBook(listBook)}
           >
             Export
           </Button>

@@ -97,6 +97,10 @@ const callCreateABook = (
     category,
   });
 };
+
+const callDeleteBook = (_id) => {
+  return axios.delete(`api/v1/book/${_id}`);
+};
 export {
   callRegister,
   callLogin,
@@ -111,4 +115,5 @@ export {
   callFetchCategory,
   callUploadImageBook,
   callCreateABook,
+  callDeleteBook,
 };
