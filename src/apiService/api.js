@@ -1,5 +1,7 @@
 import axios from "../utils/axios-customize";
 
+// -------------------------------------------user ------------------------------------
+
 const callRegister = (fullName, email, password, phone) => {
   return axios.post("/api/v1/user/register", {
     fullName,
@@ -47,6 +49,16 @@ const callUpdateUser = (_id, fullName, phone) => {
 const callDeleteUser = (_id) => {
   return axios.delete(`/api/v1/user/${_id}`);
 };
+
+// -------------------------------------------book ------------------------------------
+const callFetchListBookWithPaginate = (query) => {
+  // return axios.get(/api/v1/book?current=1&pageSize=10&mainText=/How The Body/i)
+  return axios.get(`/api/v1/book?${query}`);
+};
+
+const callFetchCategory = () => {
+  return axios.get("/api/v1/database/category");
+};
 export {
   callRegister,
   callLogin,
@@ -57,4 +69,6 @@ export {
   callBulkCreateUser,
   callUpdateUser,
   callDeleteUser,
+  callFetchListBookWithPaginate,
+  callFetchCategory,
 };
