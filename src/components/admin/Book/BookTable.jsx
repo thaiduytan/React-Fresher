@@ -25,6 +25,7 @@ import * as XLSX from "xlsx";
 import moment from "moment";
 import BookViewDetail from "./BookViewDetail";
 import BookModalCreate from "./BookModalCreate";
+import BookModalUpdate from "./BookModalUpdate";
 
 const BookTable = () => {
   const [listBook, setListBook] = React.useState([]);
@@ -36,9 +37,12 @@ const BookTable = () => {
   const [dataSearch, setDataSearch] = React.useState("");
 
   const [openViewDetailBook, setOpenViewDetailBook] = React.useState(false);
-  const [dataDetailBook, setDataDetailBooj] = React.useState({});
+  const [dataDetailBook, setDataDetailBook] = React.useState({});
 
   const [openCreateBook, setOpenCreateBook] = React.useState(false);
+
+  const [openUpdateBook, setOpenUpdateBook] = React.useState(false);
+  const [dataUpdateBook, setDataUpdateBook] = React.useState({});
 
   const fetchBook = async () => {
     setLoading(true);
@@ -70,7 +74,7 @@ const BookTable = () => {
   };
   const handleOpenDetailBook = (data) => {
     setOpenViewDetailBook(true);
-    setDataDetailBooj(data);
+    setDataDetailBook(data);
   };
 
   const hanldeDeleteBook = async (_idBook) => {
@@ -86,6 +90,11 @@ const BookTable = () => {
     }
   };
 
+  const hanldeOpenModalUpdateUser = (data) => {
+    // console.log(data);
+    setOpenUpdateBook(true);
+    setDataUpdateBook(data);
+  };
   // https://stackoverflow.com/questions/70871254/how-can-i-export-a-json-object-to-excel-using-nextjs-react
   const hanldeExportFileBook = (data) => {
     if (data && data.length > 0) {
@@ -199,7 +208,7 @@ const BookTable = () => {
             <EditTwoTone
               twoToneColor="#f57800"
               style={{ cursor: "pointer" }}
-              //   onClick={() => hanldeOpenModalUpdateUser(record)}
+              onClick={() => hanldeOpenModalUpdateUser(record)}
             ></EditTwoTone>
           </>
         );
@@ -286,6 +295,13 @@ const BookTable = () => {
         setShow={setOpenCreateBook}
         fetchBook={fetchBook}
       ></BookModalCreate>
+      <BookModalUpdate
+        show={openUpdateBook}
+        setShow={setOpenUpdateBook}
+        dataUpdate={dataUpdateBook}
+        setDataUpdate={setDataUpdateBook}
+        fetchBook={fetchBook}
+      ></BookModalUpdate>
     </>
   );
 };

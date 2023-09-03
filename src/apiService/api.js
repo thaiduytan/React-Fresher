@@ -99,7 +99,12 @@ const callCreateABook = (
 };
 
 const callDeleteBook = (_id) => {
-  return axios.delete(`api/v1/book/${_id}`);
+  return axios.delete(`/api/v1/book/${_id}`);
+};
+
+// raw
+const callUpdateBook = (_id, raw) => {
+  return axios.put(`/api/v1/book/${_id}`, raw);
 };
 export {
   callRegister,
@@ -116,4 +121,5 @@ export {
   callUploadImageBook,
   callCreateABook,
   callDeleteBook,
+  callUpdateBook,
 };
