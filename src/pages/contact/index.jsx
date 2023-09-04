@@ -4,7 +4,8 @@ import UserTable from "../../components/admin/User/UserTable";
 const ContactPage = () => {
   return (
     <div>
-      <UserTable></UserTable>
+      {/* <UserTable></UserTable> */}
+      asdasd
     </div>
   );
 };

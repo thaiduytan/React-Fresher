@@ -4,7 +4,8 @@ import BookTable from "../../components/admin/Book/BookTable";
 const BookPage = () => {
   return (
     <div>
-      <BookTable></BookTable>
+      {/* <BookTable></BookTable> */}
+      asdasds
     </div>
   );
 };

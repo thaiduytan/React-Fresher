@@ -1,6 +1,6 @@
 import React from "react";
 const AdminPage = () => {
-  return <>admin dashboard</>;
+  return <>admin</>;
 };
 
 export default AdminPage;

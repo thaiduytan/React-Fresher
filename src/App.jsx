@@ -1,8 +1,9 @@
 import React from "react";
 import "./App.scss";
-import Header from "./components/header";
-import Footer from "./components/footer";
-import Home from "./components/home";
+
+import Header from "./components/Header/index";
+import Footer from "./components/Footer/index";
+import Home from "./components/Home/index";
 
 // react router dom import Const and Page
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -24,6 +25,8 @@ import Loading from "./components/loading";
 import NotFound from "./components/notFound";
 import AdminPage from "./pages/admin";
 import LayoutAdmin from "./components/admin/LayoutAdmin";
+import UserTable from "./components/admin/User/UserTable";
+import BookTable from "./components/admin/Book/BookTable";
 
 // chuyển component layput leen thành compoent Main,
 const Layout = () => {
@@ -58,6 +61,7 @@ export default function App() {
   const getAccount = async () => {
     // không gọi api khi log vào page login, register, home
     if (
+      window.location.pathname === "/" ||
       window.location.pathname === "/auth/login" ||
       window.location.pathname === "/auth/register"
     )
@@ -81,7 +85,10 @@ export default function App() {
 
       // các children sử dụng chung 1 component header và footer thông qua outlet
       children: [
-        { index: true, element: <Home /> },
+        {
+          index: true,
+          element: <Home />,
+        },
         {
           path: "contact",
           element: <ContactPage />,
@@ -111,15 +118,24 @@ export default function App() {
         },
         {
           path: "user",
-          element: <ContactPage />,
+          element: (
+            <ProtectedRoute>
+              <UserTable />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "book",
-          element: <BookPage />,
+          element: (
+            <ProtectedRoute>
+              <BookTable />
+            </ProtectedRoute>
+          ),
         },
       ],
     },
 
+    // auth
     {
       path: "/auth",
       element: <AuthPage />,

@@ -167,7 +167,11 @@ const LayoutAdmin = () => {
               margin: "0 16px",
             }}
           >
+
+
             <Outlet />
+
+
           </Content>
           <Footer
             style={{

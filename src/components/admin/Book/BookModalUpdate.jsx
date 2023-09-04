@@ -217,7 +217,7 @@ const BookModalUpdate = (props) => {
     }
 
     setIsSubmit(true);
-
+    // console.log("onFinish >>> sold:", sold);
     const res = await callUpdateBook(_id, {
       thumbnail,
       slider,
