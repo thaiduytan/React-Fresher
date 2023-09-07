@@ -64,8 +64,9 @@ export default function App() {
       window.location.pathname === "/" ||
       window.location.pathname === "/auth/login" ||
       window.location.pathname === "/auth/register"
-    )
+    ) {
       return;
+    }
     const res = await callFetchAccount();
     if (res && res.data) {
       dispatch(doGetAccountAction(res.data));
@@ -94,7 +95,7 @@ export default function App() {
           element: <ContactPage />,
         },
         {
-          path: "book",
+          path: "book/:slug",
           element: <BookPage />,
         },
       ],

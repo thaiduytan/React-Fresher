@@ -106,6 +106,12 @@ const callDeleteBook = (_id) => {
 const callUpdateBook = (_id, raw) => {
   return axios.put(`/api/v1/book/${_id}`, raw);
 };
+
+// -------------------------------------------HOME PAGE ------------------------------------
+const callGetBookDetailById = (_id) => {
+  return axios.get(`/api/v1/book/${_id}`);
+};
+
 export {
   callRegister,
   callLogin,
@@ -122,4 +128,5 @@ export {
   callCreateABook,
   callDeleteBook,
   callUpdateBook,
+  callGetBookDetailById
 };
