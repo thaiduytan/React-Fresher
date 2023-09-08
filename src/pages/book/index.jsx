@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import "./Book.scss";
-import { Col, Divider, Rate, Row } from "antd";
+import { Col, Divider, Rate, Row, message } from "antd";
 import BookModalViewDetailSlider from "./BookModalViewDetailSlider";
 import {
   MinusOutlined,
@@ -11,12 +11,17 @@ import {
 } from "@ant-design/icons";
 import BookLoadder from "./BookLoadder";
 import { callGetBookDetailById } from "../../apiService/api";
+import { useDispatch } from "react-redux";
+import { doAddBookAction } from "../../redux/order/orderSlice";
 
 const BookPage = () => {
   const [openBookModalViewDetailSlider, setOpenBookModalViewDetailSlider] =
     React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [dataBookDetail, setDataBookDetail] = React.useState({});
+  const [currentQuantity, setCurrentQuantity] = React.useState(1);
+  const messageRef = React.useRef(null);
+
   const [listThumb, setListThumb] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 
@@ -25,6 +30,7 @@ const BookPage = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams?.get("id");
+  const dispatch = useDispatch();
 
   const fetchDataDetailBook = async () => {
     setLoading(true);
@@ -74,6 +80,46 @@ const BookPage = () => {
     setCurrentIndex(refGallery?.current?.getCurrentIndex() ?? 0);
     // refGallery?.current?.fullScreen()
   };
+
+  const handleCountQuantity = (e, type) => {
+    const maxQuantity = dataBookDetail.quantity;
+    if (type === "increase") {
+      if (currentQuantity && currentQuantity >= +maxQuantity) {
+        messageRef.current.style.display = "block";
+        setCurrentQuantity(+maxQuantity);
+        return;
+      }
+      setCurrentQuantity((c) => c + 1);
+    }
+    if (type === "decrease") {
+      messageRef.current.style.display = "none";
+      if (currentQuantity && currentQuantity < 2) return;
+      setCurrentQuantity((c) => c - 1);
+    }
+  };
+  const handleInputChange = (event) => {
+    const maxQuantity = dataBookDetail.quantity;
+    // Lọc các ký tự không phải số và cập nhật giá trị input
+    const inputValue = event.target.value.replace(/\D/g, "");
+
+    if (+inputValue < 2) {
+      setCurrentQuantity(1);
+    } else {
+      setCurrentQuantity(+inputValue);
+    }
+
+    if (parseInt(inputValue) > maxQuantity) {
+      messageRef.current.style.display = "block";
+      setCurrentQuantity(maxQuantity);
+    } else {
+      messageRef.current.style.display = "none";
+    }
+  };
+
+  const handleAddToCard = (quantity, book) => {
+    dispatch(doAddBookAction({ quantity, detail: book, _id: book._id }));
+  };
+
   return (
     <div style={{ background: "#efefef", padding: "20px 0" }}>
       <div
@@ -143,25 +189,64 @@ const BookPage = () => {
                       <span className="right_side">Miễn phí vận chuyển</span>
                     </div>
                   </div>
-                  <div className="quantity">
-                    <span className="left_side">Số lượng</span>
-                    <span className="right_side">
-                      <button>
-                        <MinusOutlined />
-                      </button>
-                      <input defaultValue={1} />
-                      <button>
-                        <PlusOutlined />
-                      </button>
+                  {dataBookDetail.quantity < 1 ? (
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        color: "red",
+                        paddingTop: "10px",
+                      }}
+                    >
+                      Xin lỗi, sản phẩm đã hết hàng
                     </span>
-                  </div>
-                  <div className="buy">
-                    <button className="cart">
-                      <PlusSquareOutlined className="icon-cart" />
-                      <span>Thêm vào giỏ hàng</span>
-                    </button>
-                    <button className="now">Mua ngay</button>
-                  </div>
+                  ) : (
+                    <>
+                      <div className="quantity">
+                        <span className="left_side">Số lượng</span>
+                        <span className="right_side">
+                          <button
+                            onClick={(e) => handleCountQuantity(e, "decrease")}
+                          >
+                            <MinusOutlined />
+                          </button>
+
+                          <input
+                            value={currentQuantity}
+                            onChange={handleInputChange}
+                          />
+
+                          <button
+                            onClick={(e) => handleCountQuantity(e, "increase")}
+                          >
+                            <PlusOutlined />
+                          </button>
+                        </span>
+                        <span className="quantity-number">
+                          {dataBookDetail?.quantity &&
+                            dataBookDetail.quantity > 0 &&
+                            `${dataBookDetail.quantity} sản phẩm có sẳn`}
+                        </span>
+                      </div>
+                      <div
+                        ref={messageRef}
+                        style={{ display: "none", color: "red" }}
+                      >
+                        Số lượng bạn chọn đã đạt mức tối đa cảu sản phẩm này
+                      </div>
+                      <div className="buy">
+                        <button
+                          className="cart"
+                          onClick={() =>
+                            handleAddToCard(currentQuantity, dataBookDetail)
+                          }
+                        >
+                          <PlusSquareOutlined className="icon-cart" />
+                          <span>Thêm vào giỏ hàng</span>
+                        </button>
+                        <button className="now">Mua ngay</button>
+                      </div>
+                    </>
+                  )}
                 </Col>
               </Col>
             </Row>

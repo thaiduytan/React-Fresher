@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaReact } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import { VscSearchFuzzy } from "react-icons/vsc";
-import { Divider, Badge, Drawer, message, Avatar } from "antd";
+import { Divider, Badge, Drawer, message, Avatar, Popover } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space } from "antd";
@@ -14,10 +14,12 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const carts = useSelector((state) => state.order.carts);
 
-  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+  console.log("Header >>> carts:", carts);
 
   const user = useSelector((state) => state.account.user);
+  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
 
   const dispatch = useDispatch();
 
@@ -28,6 +30,14 @@ const Header = () => {
   }`;
   // console.log(user);
 
+  function truncateString(str, maxLength) {
+    if (str.length <= maxLength) {
+      return str;
+    } else {
+      return str.substring(0, maxLength) + "...";
+    }
+  }
+
   const handleLogout = async () => {
     const res = await callLogOut();
 
@@ -37,6 +47,41 @@ const Header = () => {
       message.success("Đăng xuất thành công");
       navigate("/");
     }
+  };
+
+  const contentPopover = () => {
+    return (
+      <>
+        <div className="popcart-body">
+          <div className="popcart-content">
+            {carts.map((cart) => {
+              return (
+                <div className="popcart-book">
+                  <div className="popcart-img">
+                    <img
+                      src={`${import.meta.env.VITE_BACKEND_URL}/images/book/${
+                        cart?.detail?.thumbnail
+                      }`}
+                      alt={cart?.detail?.mainText}
+                    />
+                  </div>
+                  <div>{truncateString(cart?.detail?.mainText, 50)}</div>
+                  <div style={{ paddingLeft: "10px", color: "red" }}>
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(cart?.detail?.price)}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="popcart-footer">
+            <button className="popcart-check">Xem giỏ hàng</button>
+          </div>
+        </div>
+      </>
+    );
   };
 
   let items = [
@@ -93,10 +138,22 @@ const Header = () => {
           <nav className="page-header__right">
             <ul id="navigation" className="navigation">
               <li className="navigation__item">
-                <Badge count={5} size={"small"}>
-                  <FiShoppingCart className="icon-cart" />
-                </Badge>
+                <Popover
+                  className="popsover-carts"
+                  rootClassName="popsover-carts"
+                  placement="bottomRight"
+                  title={
+                    <span style={{ fontSize: "13px" }}>Sản phẩm mới thêm</span>
+                  }
+                  content={contentPopover}
+                  arrow={true}
+                >
+                  <Badge count={carts?.length ?? 0} size={"small"} showZero>
+                    <FiShoppingCart className="icon-cart" />
+                  </Badge>
+                </Popover>
               </li>
+
               <li className="navigation__item mobile">
                 <Divider type="vertical" />
               </li>

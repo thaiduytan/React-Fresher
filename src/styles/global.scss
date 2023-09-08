@@ -1,0 +1,55 @@
+// popcart- header
+
+.popsover-carts {
+  .popcart-body {
+    .popcart-content {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 5px;
+      .popcart-book {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 15px;
+        .popcart-img {
+          padding-right: 10px;
+          width: 50px;
+          height: 60px;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+        font-size: 12px;
+      }
+    }
+  }
+  .popcart-footer {
+    display: flex;
+    justify-content: end;
+    button {
+      overflow: visible;
+      outline: 0;
+      background: #ff57221a;
+      color: #ee4d2d;
+      border: 1px solid #ee4d2d;
+      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
+      cursor: pointer;
+      border-radius: 5px;
+
+      font-size: 14px;
+      height: 48px;
+      padding: 0 20px;
+    }
+    .popcart-check {
+      color: #fff;
+      position: relative;
+      overflow: visible;
+      outline: 0;
+      background: #ee4d2d;
+      &:hover {
+        background: #f05d40;
+      }
+    }
+  }
+}
