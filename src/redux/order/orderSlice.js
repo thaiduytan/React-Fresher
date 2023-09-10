@@ -25,8 +25,10 @@ export const orderSlice = createSlice({
       // hàm if nhỏ để ngăn chặn số đơn hàng vượt quá số lượng book
       if (idExistIndex != -1) {
         carts[idExistIndex].quantity += item.quantity;
-        if (carts[idExistIndex].quantity > item.quantity) {
-          carts[idExistIndex].quantity = item.quantity;
+        if (
+          carts[idExistIndex].quantity > carts[idExistIndex].detail.quantity
+        ) {
+          carts[idExistIndex].quantity = carts[idExistIndex].detail.quantity;
         }
       } else {
         carts.push({
@@ -39,6 +41,41 @@ export const orderSlice = createSlice({
       state.carts = carts;
       message.success("Sản phẩm đã được thêm vào Giỏ hàng");
     },
+    doRemoveBookAction: (state, action) => {
+      let carts = state.carts;
+      const itemId = action.payload;
+
+      let newCarts = carts.filter((c) => c._id !== itemId);
+      state.carts = newCarts;
+    },
+    doAddQuantity: (state, action) => {
+      let carts = state.carts;
+      const item = action.payload;
+
+      let idExistIndex = state.carts.findIndex((c) => c._id === item._id);
+
+      // kiểm tra xem nếu quyển sách đã được thêm vào rồi thì không thêm mới nửa, mà chỉ cập nhật số lượng mới
+      // hàm if nhỏ để ngăn chặn số đơn hàng vượt quá số lượng book
+      if (idExistIndex != -1) {
+        carts[idExistIndex].quantity = item.quantity;
+        if (
+          carts[idExistIndex].quantity > carts[idExistIndex].detail.quantity
+        ) {
+          carts[idExistIndex].quantity = carts[idExistIndex].detail.quantity;
+        }
+      } else {
+        carts.push({
+          quantity: item.quantity,
+          _id: item._id,
+          detail: item.detail,
+        });
+      }
+      // update redux immer
+      state.carts = carts;
+    },
+    doClearBookAction: (state) => {
+      state.carts = [];
+    },
   },
 
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -46,6 +83,11 @@ export const orderSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { doAddBookAction } = orderSlice.actions;
+export const {
+  doAddBookAction,
+  doAddQuantity,
+  doRemoveBookAction,
+  doClearBookAction,
+} = orderSlice.actions;
 
 export default orderSlice.reducer;

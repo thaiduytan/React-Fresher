@@ -28,6 +28,7 @@ import AdminPage from "./pages/admin";
 import LayoutAdmin from "./components/admin/LayoutAdmin";
 import UserTable from "./components/admin/User/UserTable";
 import BookTable from "./components/admin/Book/BookTable";
+import ViewOrder from "./pages/viewOrder";
 
 // chuyển component layput leen thành compoent Main,
 const Layout = () => {
@@ -99,6 +100,10 @@ export default function App() {
           path: "book/:slug",
           element: <BookPage />,
         },
+        {
+          path: "order",
+          element: <ViewOrder />,
+        },
       ],
     },
 
@@ -155,6 +160,7 @@ export default function App() {
         },
       ],
     },
+
   ]);
   return (
     <>

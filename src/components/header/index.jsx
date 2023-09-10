@@ -16,8 +16,6 @@ const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const carts = useSelector((state) => state.order.carts);
 
-  console.log("Header >>> carts:", carts);
-
   const user = useSelector((state) => state.account.user);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
 
@@ -76,9 +74,20 @@ const Header = () => {
               );
             })}
           </div>
-          <div className="popcart-footer">
-            <button className="popcart-check">Xem giỏ hàng</button>
-          </div>
+          {carts.length > 0 ? (
+            <div className="popcart-footer">
+              <button
+                className="popcart-check"
+                onClick={() => navigate("/order")}
+              >
+                Xem giỏ hàng
+              </button>
+            </div>
+          ) : (
+            <div className="popcart-footer">
+              Bạn không có sản phẩm trong giỏ hàng
+            </div>
+          )}
         </div>
       </>
     );
@@ -124,7 +133,7 @@ const Header = () => {
               ☰
             </div>
             <div className="page-header__logo">
-              <span className="logo">
+              <span className="logo" onClick={() => navigate("/")}>
                 <FaReact className="rotate icon-react" /> Duy Tanzz
                 <VscSearchFuzzy className="icon-search" />
               </span>

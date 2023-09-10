@@ -3,13 +3,13 @@ import { useLocation } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import "./Book.scss";
 import { Col, Divider, Rate, Row, message } from "antd";
-import BookModalViewDetailSlider from "./BookModalViewDetailSlider";
+import BookModalViewDetailSlider from "../../components/Book/BookModalViewDetailSlider";
 import {
   MinusOutlined,
   PlusOutlined,
   PlusSquareOutlined,
 } from "@ant-design/icons";
-import BookLoadder from "./BookLoadder";
+import BookLoadder from "../../components/Book/BookLoadder";
 import { callGetBookDetailById } from "../../apiService/api";
 import { useDispatch } from "react-redux";
 import { doAddBookAction } from "../../redux/order/orderSlice";

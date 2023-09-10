@@ -112,6 +112,10 @@ const callGetBookDetailById = (_id) => {
   return axios.get(`/api/v1/book/${_id}`);
 };
 
+// raw
+const callCreateAnOrder = (order) => {
+  return axios.post(`/api/v1/order`, { ...order });
+};
 export {
   callRegister,
   callLogin,
@@ -128,5 +132,6 @@ export {
   callCreateABook,
   callDeleteBook,
   callUpdateBook,
-  callGetBookDetailById
+  callGetBookDetailById,
+  callCreateAnOrder,
 };

@@ -11,7 +11,7 @@ const BookModalViewDetailSlider = ({ show, setShow, images, title }) => {
     setShow(false);
   };
   const handleThumbnailClick = (index) => {
-    console.log("handleThumbnailClick >>> index:", index);
+    // console.log("handleThumbnailClick >>> index:", index);
 
     setSelectedIndex(index);
   };
