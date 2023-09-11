@@ -116,6 +116,11 @@ const callGetBookDetailById = (_id) => {
 const callCreateAnOrder = (order) => {
   return axios.post(`/api/v1/order`, { ...order });
 };
+
+const callFetchHistoryWithPaginate = (query) => {
+  // return axios.get(/api/v1/book?current=1&pageSize=10&mainText=/How The Body/i)
+  return axios.get(`/api/v1/order?${query}`);
+};
 export {
   callRegister,
   callLogin,
@@ -134,4 +139,5 @@ export {
   callUpdateBook,
   callGetBookDetailById,
   callCreateAnOrder,
+  callFetchHistoryWithPaginate,
 };

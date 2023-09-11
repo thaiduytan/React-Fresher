@@ -29,6 +29,7 @@ import LayoutAdmin from "./components/admin/LayoutAdmin";
 import UserTable from "./components/admin/User/UserTable";
 import BookTable from "./components/admin/Book/BookTable";
 import ViewOrder from "./pages/viewOrder";
+import History from "./pages/history";
 
 // chuyển component layput leen thành compoent Main,
 const Layout = () => {
@@ -104,6 +105,10 @@ export default function App() {
           path: "order",
           element: <ViewOrder />,
         },
+        {
+          path: "history",
+          element: <History />,
+        },
       ],
     },
 
@@ -160,7 +165,6 @@ export default function App() {
         },
       ],
     },
-
   ]);
   return (
     <>

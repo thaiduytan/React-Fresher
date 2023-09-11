@@ -116,7 +116,7 @@ const BookTable = () => {
       setPageSize(pagination.pageSize);
       setCurrent(1);
     }
-    console.log(sorter);
+    // console.log(sorter);
     // // query sort
     if (sorter && sorter.field) {
       setDataSort(

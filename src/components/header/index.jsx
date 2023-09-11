@@ -11,9 +11,12 @@ import "./Header.scss";
 import { callLogOut } from "../../apiService/api";
 import { doLogOutAccount_cachMot } from "../../redux/account/accountSlice";
 import { Link } from "react-router-dom";
+import ManageAccount from "../ManageAccount/ManageAccount";
 
 const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openModalManageAccount, setOpenModalManageAccount] = useState(false);
+
   const carts = useSelector((state) => state.order.carts);
 
   const user = useSelector((state) => state.account.user);
@@ -95,8 +98,34 @@ const Header = () => {
 
   let items = [
     {
-      label: <label style={{ cursor: "pointer" }}>Quản lý tài khoản</label>,
+      label: (
+        <label style={{ cursor: "pointer" }}>
+          <Link style={{ color: "inherit" }} to="/">
+            Trang chủ
+          </Link>
+        </label>
+      ),
+      key: "home",
+    },
+    {
+      label: (
+        <label style={{ cursor: "pointer" }}>
+          <span onClick={() => setOpenModalManageAccount(true)}>
+            Quản lý tài khoản
+          </span>
+        </label>
+      ),
       key: "account",
+    },
+    {
+      label: (
+        <label style={{ cursor: "pointer" }}>
+          <Link style={{ color: "inherit" }} to="/history">
+            Lịch sử mua hàng
+          </Link>
+        </label>
+      ),
+      key: "history",
     },
     {
       label: (
@@ -206,6 +235,10 @@ const Header = () => {
           </>
         )}
       </Drawer>
+      <ManageAccount
+        show={openModalManageAccount}
+        setShow={setOpenModalManageAccount}
+      />
     </>
   );
 };

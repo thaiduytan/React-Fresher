@@ -1,16 +1,12 @@
+import React from "react";
 import {
   Button,
   Col,
-  Divider,
   Empty,
-  Form,
-  Input,
   InputNumber,
   Popconfirm,
-  Radio,
   Result,
   Row,
-  Select,
   Steps,
 } from "antd";
 import "./order.scss";
@@ -20,17 +16,18 @@ import {
   SmileOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import React from "react";
 import {
   doAddQuantity,
   doRemoveBookAction,
 } from "../../redux/order/orderSlice";
 import ViewPrice from "../../components/Order/ViewPrice";
 import Payment from "../../components/Order/Payment";
+import { useNavigate } from "react-router-dom";
 
 const ViewOrder = (props) => {
   const carts = useSelector((state) => state.order.carts);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [totalCarts, setTotalCarts] = React.useState(0);
   const [currentStep, setCurrentStep] = React.useState(0);
 
@@ -168,7 +165,11 @@ const ViewOrder = (props) => {
           <Result
             icon={<SmileOutlined />}
             title="Đơn hàng đã được đặt thành công"
-            extra={<Button type="primary">Xem lịch sử</Button>}
+            extra={
+              <Button onClick={() => navigate("/history")} type="primary">
+                Xem lịch sử
+              </Button>
+            }
           ></Result>
         )}
       </div>
