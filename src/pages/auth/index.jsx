@@ -3,6 +3,8 @@ import React from "react";
 // import FooterAuth from "../../components/footer/Auth";
 import { Outlet } from "react-router-dom";
 import "./index.scss";
+import HeaderAuth from "./../../components/Header/Auth";
+import HeaderAuth from "./../../components/Footer/Auth";
 
 const AuthPage = () => {
   return (
