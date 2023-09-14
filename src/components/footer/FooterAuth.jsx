@@ -1,5 +1,5 @@
 import React from "react";
-import "./Auth.scss";
+import "./FooterAuth.scss";
 import { Col, Row } from "antd";
 
 const FooterAuth = () => {
