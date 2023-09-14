@@ -2,9 +2,9 @@ import React from "react";
 import "./styles/reset.scss";
 import "./styles/global.scss";
 
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Home from "./components/Home";
+import Header from "./components/header/index";
+import Footer from "./components/footer/index";
+import Home from "./components/home/index";
 
 // react router dom import Const and Page
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
