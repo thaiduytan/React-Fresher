@@ -2,9 +2,9 @@ import React from "react";
 import "./styles/reset.scss";
 import "./styles/global.scss";
 
-import Header from "./components/Header/index";
-import Footer from "./components/Footer/index";
-import Home from "./components/Home/index";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./components/Home";
 
 // react router dom import Const and Page
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -21,15 +21,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { doGetAccountAction } from "./redux/account/accountSlice";
 
 // React Router 6: Private Routes : bảo vệ route khi chưa đăng nhập
-import ProtectedRoute from "./components/protectedRoute/index";
+import ProtectedRoute from "./components/protectedRoute";
 import Loading from "./components/loading";
 import NotFound from "./components/notFound";
 import AdminPage from "./pages/admin";
 import LayoutAdmin from "./components/admin/LayoutAdmin";
 import UserTable from "./components/admin/User/UserTable";
 import BookTable from "./components/admin/Book/BookTable";
-import ViewOrder from "./pages/viewOrder/index";
-import History from "./pages/history/index";
+import ViewOrder from "./pages/viewOrder";
+import History from "./pages/history";
 
 // chuyển component layput leen thành compoent Main,
 const Layout = () => {
