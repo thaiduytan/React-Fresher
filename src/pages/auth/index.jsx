@@ -4,14 +4,14 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import "./index.scss";
 import HeaderAuth from "./../../components/Header/Auth";
-import HeaderAuth from "./../../components/Footer/Auth";
+import FooterAuth from "./../../components/Footer/Auth";
 
 const AuthPage = () => {
   return (
     <div className="wrapper-auth">
-      <HeaderAuth></HeaderAuth>
+      <HeaderAuth />
       <Outlet></Outlet>
-      <FooterAuth></FooterAuth>
+      <FooterAuth />
     </div>
   );
 };
