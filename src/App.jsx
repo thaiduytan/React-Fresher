@@ -21,22 +21,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { doGetAccountAction } from "./redux/account/accountSlice";
 
 // React Router 6: Private Routes : bảo vệ route khi chưa đăng nhập
-import ProtectedRoute from "./components/protectedRoute";
+import ProtectedRoute from "./components/protectedRoute/index";
 import Loading from "./components/loading";
 import NotFound from "./components/notFound";
 import AdminPage from "./pages/admin";
 import LayoutAdmin from "./components/admin/LayoutAdmin";
 import UserTable from "./components/admin/User/UserTable";
 import BookTable from "./components/admin/Book/BookTable";
-import ViewOrder from "./pages/viewOrder";
-import History from "./pages/history";
+import ViewOrder from "./pages/viewOrder/index";
+import History from "./pages/history/index";
 
 // chuyển component layput leen thành compoent Main,
 const Layout = () => {
+  const [searchTerm, setSearchTerm] = React.useState("");
   return (
     <div className="layput-page">
-      <Header></Header>
-      <Outlet></Outlet>
+      <Header setSearchTerm={setSearchTerm}></Header>
+      <Outlet context={[searchTerm, setSearchTerm]}></Outlet>
       <Footer></Footer>
     </div>
   );
@@ -59,12 +60,14 @@ const Layout = () => {
 // giao cho component App bọc RouterProvider, chứ không làm như thư viện RouterProvider bọc APP
 export default function App() {
   const dispatch = useDispatch();
+  const token = localStorage.getItem("access_token");
   const isLoading = useSelector((state) => state.account.isLoading);
+
   // func fetch lại account và chuyền ngược lại cho reddux
   const getAccount = async () => {
     // không gọi api khi log vào page login, register, home
     if (
-      window.location.pathname === "/" ||
+      (window.location.pathname === "/" && !token) ||
       window.location.pathname === "/auth/login" ||
       window.location.pathname === "/auth/register"
     ) {
@@ -103,11 +106,19 @@ export default function App() {
         },
         {
           path: "order",
-          element: <ViewOrder />,
+          element: (
+            <ProtectedRoute>
+              <ViewOrder />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "history",
-          element: <History />,
+          element: (
+            <ProtectedRoute>
+              <History />
+            </ProtectedRoute>
+          ),
         },
       ],
     },

@@ -48,6 +48,7 @@ instance.interceptors.response.use(
     return response && response.data ? response.data : response;
   },
   async function (error) {
+    const token = localStorage.getItem("access_token");
     // console.log(error);
     // axios retry refresh token
     // THU VIEN : https://www.npmjs.com/package/axios-retry

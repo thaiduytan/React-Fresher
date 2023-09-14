@@ -121,6 +121,37 @@ const callFetchHistoryWithPaginate = (query) => {
   // return axios.get(/api/v1/book?current=1&pageSize=10&mainText=/How The Body/i)
   return axios.get(`/api/v1/order?${query}`);
 };
+
+// form-data img
+const callUploadAvatar = (fileImg) => {
+  const formData = new FormData();
+  formData.append("fileImg", fileImg);
+  return axios({
+    method: "post",
+    url: "/api/v1/file/upload",
+    data: formData,
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "upload-type": "avatar",
+    },
+  });
+};
+
+const callUpdateInfo = (fullName, phone, avatar, _id) => {
+  return axios.put(`/api/v1/user`, { fullName, phone, avatar, _id });
+};
+
+const callChangePassword = (email, oldpass, newpass) => {
+  return axios.post(`/api/v1/user/change-password`, {
+    email,
+    oldpass,
+    newpass,
+  });
+};
+
+const callGetDashboard = () => {
+  return axios.get(`/api/v1/database/dashboard`);
+};
 export {
   callRegister,
   callLogin,
@@ -140,4 +171,8 @@ export {
   callGetBookDetailById,
   callCreateAnOrder,
   callFetchHistoryWithPaginate,
+  callUploadAvatar,
+  callUpdateInfo,
+  callChangePassword,
+  callGetDashboard
 };

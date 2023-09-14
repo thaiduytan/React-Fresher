@@ -4,6 +4,7 @@ import { callLogOut } from "../../apiService/api";
 const initialState = {
   isAuthenticated: false,
   isLoading: true,
+  tempAvatar: "",
   user: {
     email: "",
     phone: "",
@@ -29,6 +30,7 @@ export const accountSlice = createSlice({
   initialState,
   reducers: {
     doLoginAction: (state, action) => {
+      state.isLoggedIn = true;
       state.isLoading = false;
       state.isAuthenticated = true;
       state.user = action.payload;
@@ -50,6 +52,17 @@ export const accountSlice = createSlice({
         id: "",
       };
     },
+    doUploadAvatarAction: (state, action) => {
+      state.tempAvatar = action.payload.avatar;
+    },
+    doUpdateUserInfo: (state, action) => {
+
+      // console.log("action:", state.user.avatar);
+
+      state.user.avatar = action.payload.avatar;
+      state.user.fullName = action.payload.fullName;
+      state.user.phone = action.payload.phone;
+    },
   },
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
@@ -69,7 +82,13 @@ export const accountSlice = createSlice({
   },
 });
 
-export const { doLoginAction, doGetAccountAction, doLogOutAccount_cachMot } =
-  accountSlice.actions;
+export const {
+  doLoginAction,
+  doGetAccountAction,
+  doLogOutAccount_cachMot,
+  doUploadAvatarAction,
+  doClearAvatarTemp,
+  doUpdateUserInfo,
+} = accountSlice.actions;
 
 export default accountSlice.reducer;

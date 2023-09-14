@@ -18,11 +18,12 @@ import {
   callFetchCategory,
   callFetchListBookWithPaginate,
 } from "../../apiService/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
-const Home = () => {
+const Home = (props) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useOutletContext();
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [total, setTotal] = React.useState(10);
@@ -69,6 +70,9 @@ const Home = () => {
       query += `&${priceQuery}`;
     }
 
+    if (searchTerm) {
+      query += `&mainText=/${searchTerm}/i`;
+    }
     setIsLoading(true);
     const res = await callFetchListBookWithPaginate(query);
     if (res && res.data) {
@@ -80,7 +84,7 @@ const Home = () => {
   // list p[aginate
   React.useEffect(() => {
     fetchListBookWithPaginate();
-  }, [current, pageSize, sortQuery, categoryQuery, priceQuery]);
+  }, [current, pageSize, sortQuery, categoryQuery, priceQuery, searchTerm]);
 
   const onFinish = (values) => {
     // console.log(values);
@@ -229,7 +233,10 @@ const Home = () => {
               <ReloadOutlined
                 title="Reset"
                 onClick={() => {
-                  form.resetFields(), setCategoryQuery(""), setPriceQuery("");
+                  form.resetFields(),
+                    setCategoryQuery(""),
+                    setPriceQuery(""),
+                    setSearchTerm("");
                 }}
               />
             </div>

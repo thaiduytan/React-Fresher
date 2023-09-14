@@ -14,6 +14,7 @@ import { Avatar, Dropdown, Layout, Menu, Space, message, theme } from "antd";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { doLogOutAccount_cachHai } from "../../redux/account/accountSlice";
+import ManageAccount from "../ManageAccount/ManageAccount";
 const { Content, Footer, Sider } = Layout;
 // function getItem(label, key, icon, children) {
 //   return {
@@ -30,11 +31,7 @@ const itemsNav = [
     icon: <AppstoreOutlined />,
   },
   {
-    label: (
-      <Link to="/admin" className="layout-admin__link">
-        <span>Manage Users</span>
-      </Link>
-    ),
+    label: <span>Manage Users</span>,
     key: "user",
     icon: <UserOutlined />,
     children: [
@@ -55,14 +52,20 @@ const itemsNav = [
     key: "book",
     icon: <ExceptionOutlined />,
   },
-  {
-    label: <Link to="/admin/order">Manage Orders</Link>,
-    key: "order",
-    icon: <DollarCircleOutlined />,
-  },
 ];
 const LayoutAdmin = () => {
   const user = useSelector((state) => state.account.user);
+  const [openModalManageAccount, setOpenModalManageAccount] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(true);
+
+  React.useEffect(() => {
+    if (window.location.pathname.includes("/book")) {
+      setActiveMenu("book");
+    }
+    if (window.location.pathname.includes("/admin/user")) {
+      setActiveMenu("crud");
+    }
+  }, []);
 
   const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
     user?.avatar
@@ -97,18 +100,32 @@ const LayoutAdmin = () => {
     {
       label: (
         <label style={{ cursor: "pointer" }}>
-          <Link style={{color: "inherit"}} to={"/"}>Trang chủ</Link>
+          <Link style={{ color: "inherit" }} to="/">
+            Trang chủ
+          </Link>
         </label>
       ),
-      key: "admin",
+      key: "home",
     },
     {
       label: (
         <label style={{ cursor: "pointer" }}>
-          <span>Quản lý tài khoản</span>
+          <span onClick={() => setOpenModalManageAccount(true)}>
+            Quản lý tài khoản
+          </span>
         </label>
       ),
       key: "account",
+    },
+    {
+      label: (
+        <label style={{ cursor: "pointer" }}>
+          <Link style={{ color: "inherit" }} to="/history">
+            Lịch sử mua hàng
+          </Link>
+        </label>
+      ),
+      key: "history",
     },
     {
       label: (
@@ -136,9 +153,13 @@ const LayoutAdmin = () => {
           <div className="layout-admin__logo">ADMIN</div>
           <Menu
             theme="light"
-            defaultSelectedKeys={["1"]}
+            // defaultSelectedKeys={["1"]}
+            selectedKeys={[activeMenu]}
             mode="inline"
             items={itemsNav}
+            onClick={(e) => {
+              setActiveMenu(e.key);
+            }}
           />
         </Sider>
         <Layout>
@@ -167,11 +188,7 @@ const LayoutAdmin = () => {
               margin: "0 16px",
             }}
           >
-
-
             <Outlet />
-
-
           </Content>
           <Footer
             style={{
@@ -182,6 +199,10 @@ const LayoutAdmin = () => {
           </Footer>
         </Layout>
       </Layout>
+      <ManageAccount
+        show={openModalManageAccount}
+        setShow={setOpenModalManageAccount}
+      />
     </>
   );
 };

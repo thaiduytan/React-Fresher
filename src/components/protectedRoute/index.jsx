@@ -9,7 +9,15 @@ const RoleBaseRoute = (props) => {
   const user = useSelector((state) => state.account.user);
   const roleRole = user.role;
 
-  if (isAdminRole && roleRole === "ADMIN") {
+  // (isAdminRole && roleRole === "ADMIN")
+  // if(!isAdminRole){
+  //   console.log("ok");
+  // }
+  // (isAdminRole && roleRole === "ADMIN") || (!isAdminRole && (roleRole === "ADMIN" ||roleRole === "USER" )
+  if (
+    (isAdminRole && roleRole === "ADMIN") ||
+    (!isAdminRole && (roleRole === "ADMIN" || roleRole === "USER"))
+  ) {
     return <>{props.children}</>;
   } else {
     return <NotPermitted />;

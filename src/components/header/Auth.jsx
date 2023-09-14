@@ -7,7 +7,7 @@ const HeaderAuth = () => {
     <header className="header-auth">
       <div className="header-logo">
         <span className="">
-          <a href="#">Developer Platform</a>
+          <Link to="/">Developer Platform</Link>
         </span>
       </div>
       <div className="header-nav">

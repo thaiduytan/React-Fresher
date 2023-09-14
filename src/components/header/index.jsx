@@ -12,8 +12,8 @@ import { callLogOut } from "../../apiService/api";
 import { doLogOutAccount_cachMot } from "../../redux/account/accountSlice";
 import { Link } from "react-router-dom";
 import ManageAccount from "../ManageAccount/ManageAccount";
-
-const Header = () => {
+import { debounce } from "lodash";
+const Header = ({ setSearchTerm }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openModalManageAccount, setOpenModalManageAccount] = useState(false);
 
@@ -49,6 +49,9 @@ const Header = () => {
       navigate("/");
     }
   };
+  const handleInputSearch = debounce((e) => {
+    setSearchTerm(e.target.value);
+  }, 500);
 
   const contentPopover = () => {
     return (
@@ -137,7 +140,7 @@ const Header = () => {
     },
   ];
   if (user?.role === "ADMIN") {
-    items.unshift({
+    items.splice(1, 0, {
       label: (
         <label style={{ cursor: "pointer" }}>
           <Link style={{ color: "inherit" }} to="/admin">
@@ -147,6 +150,16 @@ const Header = () => {
       ),
       key: "admin",
     });
+    // items.unshift({
+    //   label: (
+    //     <label style={{ cursor: "pointer" }}>
+    //       <Link style={{ color: "inherit" }} to="/admin">
+    //         Trang quản trị
+    //       </Link>
+    //     </label>
+    //   ),
+    //   key: "admin",
+    // });
   }
   return (
     <>
@@ -167,6 +180,7 @@ const Header = () => {
                 <VscSearchFuzzy className="icon-search" />
               </span>
               <input
+                onChange={(e) => handleInputSearch(e)}
                 className="input-search"
                 type={"text"}
                 placeholder="Bạn tìm gì hôm nay"
